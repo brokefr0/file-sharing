@@ -8,7 +8,7 @@ function FileItem({ file }) {
 
     return (
         <div>
-            <div className='p-5 rounded-md bg-gray-50 flex flex-col items-center justify-center border-dashed border border-blue-200'>
+            <div className='p-5 rounded-md bg-gray-50 dark:bg-gray-900 transition-colors duration-300 flex flex-col items-center justify-center border-dashed border border-blue-200 dark:border-blue-700'>
 
                 {/* Preview Section: Check if it's an image */}
                 {file.fileType.startsWith('image/') ? (
@@ -23,7 +23,7 @@ function FileItem({ file }) {
                     />
                 )}
 
-                <h2 className='text-center text-[20px] mt-2 font-semibold'>{file.fileName}</h2>
+                <h2 className='text-center text-[20px] mt-2 font-semibold text-gray-900 dark:text-gray-100'>{file.fileName}</h2>
                 <h2 className='text-center text-[12px] text-gray-400 font-bold'>{(file.fileSize / 1024 / 1024).toFixed(2)} MB</h2>
             </div>
 

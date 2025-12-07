@@ -25,7 +25,11 @@ function UploadForm() {
     if (!file) return;
 
     try {
-      const fileName = Date.now() + "-" + file.name;
+      const sanitizeFileName = (name) => {
+        return name.replace(/[^a-zA-Z0-9.\-_]/g, '');
+      }
+
+      const fileName = Date.now() + "-" + sanitizeFileName(file.name);
 
       // Upload directly to Supabase Storage 'files' bucket
       const { data, error } = await supabase
