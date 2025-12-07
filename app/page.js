@@ -1,5 +1,10 @@
-import Upload from "./UploadPage/page";
+import Image from "next/image";
+import Hero from "./_components/Hero";
 
 export default function Home() {
-  return <Upload />;
+  return (
+    <div>
+      <Hero />
+    </div>
+  );
 }
