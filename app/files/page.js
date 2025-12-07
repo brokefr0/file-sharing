@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '../_utils/supabaseClient'
-import { FileText, Image as ImageIcon, Download, ExternalLink } from 'lucide-react'
+import { FileText, Image as ImageIcon, Download, ExternalLink, Trash2 } from 'lucide-react'
 
 function Files() {
     const [fileList, setFileList] = useState([]);
@@ -40,6 +40,28 @@ function Files() {
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    const deleteFile = async (fileName) => {
+        if (!window.confirm(`Are you sure you want to delete "${fileName}"? This cannot be undone.`)) {
+            return;
+        }
+
+        try {
+            const { error } = await supabase
+                .storage
+                .from('files')
+                .remove([fileName]);
+
+            if (error) throw error;
+
+            // Remove from local state immediately
+            setFileList(prev => prev.filter(file => file.name !== fileName));
+
+        } catch (error) {
+            console.error('Error deleting file:', error);
+            alert('Failed to delete file. Please try again.');
+        }
     }
 
     return (
@@ -124,6 +146,13 @@ function Files() {
                                             >
                                                 View
                                             </Link>
+                                            <button
+                                                onClick={() => deleteFile(file.name)}
+                                                className="inline-flex items-center justify-center rounded-lg bg-red-50 dark:bg-red-900/20 px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 transition"
+                                                title="Delete File"
+                                            >
+                                                <Trash2 size={18} />
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
